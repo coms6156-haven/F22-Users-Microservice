@@ -11,7 +11,6 @@ CORS(app)
 
 @app.route("/api/users", methods=["GET"])
 def get_users():
-
     users = UserResource.get_all()
 
     if users:
@@ -24,7 +23,6 @@ def get_users():
 
 @app.route("/api/users/<uid>", methods=["GET"])
 def get_user_by_uid(uid):
-
     result = UserResource.get_by_key(uid)
 
     if result:

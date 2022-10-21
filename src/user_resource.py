@@ -1,7 +1,7 @@
 import os
 import pymysql
 
-database = 'f22_databases'
+database = 'users'
 table = 'users'
 
 
