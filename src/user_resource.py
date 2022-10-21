@@ -27,10 +27,10 @@ class UserResource:
 
     @staticmethod
     def get_by_key(key):
-        sql = f"SELECT * FROM {database}.{table} where uid=%s"
+        sql = f"SELECT * FROM {database}.{table} where uid={key}"
         conn = UserResource._get_connection()
         cur = conn.cursor()
-        cur.execute(sql, args=key)
+        cur.execute(sql)
         user = cur.fetchone()
 
         return user
