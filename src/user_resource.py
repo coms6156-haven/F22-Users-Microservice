@@ -32,6 +32,7 @@ class UserResource:
         cur = conn.cursor()
         cur.execute(sql)
         user = cur.fetchone()
+        conn.close()
 
         return user
 
@@ -42,5 +43,16 @@ class UserResource:
         cur = conn.cursor()
         cur.execute(sql)
         users = cur.fetchall()
+        conn.close()
 
         return users
+
+    @staticmethod
+    def sign_up_user(email, password, first_name, last_name):
+        sql = f"INSERT INTO {database}.{table}(email, password, first_name, last_name) " \
+              f"VALUES (\"{email}\", \"{password}\", \"{first_name}\", \"{last_name}\")"
+        conn = UserResource._get_connection()
+        cur = conn.cursor()
+        cur.execute(sql)
+        conn.close()
+
