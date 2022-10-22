@@ -87,3 +87,28 @@ class UserResource:
         cur = conn.cursor()
         cur.execute(sql)
         conn.close()
+
+    @staticmethod
+    def update_user(uid, request_json):
+        if len(request_json) > 0:
+            email = request_json.get('email', '')
+            password = request_json.get('password', '')
+            first_name = request_json.get('first_name', '')
+            last_name = request_json.get('last_name', '')
+
+            sql = f"UPDATE {database}.{table} SET "
+            if email:
+                sql += f'email="{email}", '
+            if password:
+                sql += f'password="{password}", '
+            if first_name:
+                sql += f'first_name="{first_name}", '
+            if last_name:
+                sql += f'last_name="{last_name}", '
+            sql = sql[:-2]
+            sql += f' WHERE uid={uid};'
+
+            conn = UserResource._get_connection()
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.close()

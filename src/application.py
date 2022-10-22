@@ -35,12 +35,12 @@ def users_route():
         try:
             UserResource.sign_up_user(email, password, first_name, last_name)
         except Exception as e:
-            return Response(json.dumps({"result": False, "error": f"{e}"}), status=404, content_type="application.json")
+            return Response(f"{e}", status=404, content_type="text/plain")
 
         return Response(json.dumps({"result": True}), status=200, content_type="application.json")
 
 
-@app.route("/api/users/<uid>", methods=["GET", "DELETE"])
+@app.route("/api/users/<uid>", methods=["GET", "DELETE", "PUT"])
 def user_route(uid):
     # Get user by uid
     if request.method == "GET":
@@ -52,12 +52,22 @@ def user_route(uid):
             rsp = Response("NOT FOUND", status=404, content_type="text/plain")
 
         return rsp
+
     # Delete user by uid
     elif request.method == "DELETE":
         try:
             UserResource.delete_user(uid)
         except Exception as e:
-            return Response(json.dumps({"result": False, "error": f"{e}"}), status=404, content_type="application.json")
+            return Response(f"{e}", status=404, content_type="text/plain")
+
+        return Response(json.dumps({"result": True}), status=200, content_type="application.json")
+
+    # Update user by uid
+    elif request.method == "PUT":
+        try:
+            UserResource.update_user(uid, request.json)
+        except Exception as e:
+            return Response(f"{e}", status=404, content_type="text/plain")
 
         return Response(json.dumps({"result": True}), status=200, content_type="application.json")
 
