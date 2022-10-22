@@ -13,14 +13,13 @@ CORS(app)
 def users_route():
     # Get all users
     if request.method == "GET":
-        users = UserResource.get_all()
-
-        if users:
-            rsp = Response(json.dumps(users), status=200, content_type="application.json")
+        if len(request.args) == 0:
+            users = UserResource.get_all()
         else:
-            rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+            users = UserResource.get_users_by_params(request.args)
 
-        return rsp
+        return Response(json.dumps(users), status=200, content_type="application.json")
+
     # Sign up a user
     elif request.method == "POST":
         req = request.form

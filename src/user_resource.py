@@ -48,6 +48,30 @@ class UserResource:
         return users
 
     @staticmethod
+    def get_users_by_params(params):
+        sql = f'SELECT * FROM {database}.{table} WHERE '
+        email = params.get('email', '')
+        first_name = params.get('first_name', '')
+        last_name = params.get('last_name', '')
+
+        if email:
+            sql += f'email="{email}" and '
+        if first_name:
+            sql += f'first_name="{first_name}" and '
+        if last_name:
+            sql += f'last_name="{last_name}" and '
+
+        sql = sql[:-5]
+        sql += ';'
+        conn = UserResource._get_connection()
+        cur = conn.cursor()
+        cur.execute(sql)
+        users = cur.fetchall()
+        conn.close()
+
+        return users
+
+    @staticmethod
     def sign_up_user(email, password, first_name, last_name):
         sql = f"INSERT INTO {database}.{table}(email, password, first_name, last_name) " \
               f"VALUES (\"{email}\", \"{password}\", \"{first_name}\", \"{last_name}\")"
