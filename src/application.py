@@ -22,14 +22,12 @@ def users_route():
 
     # Sign up a user
     elif request.method == "POST":
-        req = request.form
+        email = request.json.get('email', '')
+        password = request.json.get('password', '')
+        first_name = request.json.get('first_name', '')
+        last_name = request.json.get('last_name', '')
 
-        email = req['email']
-        password = req['password']
-        first_name = req['first_name']
-        last_name = req['last_name']
-
-        if not email or not password or not first_name or not last_name:
+        if not email or not password:
             return Response("INVALID BODY", status=404, content_type="text/plain")
 
         try:
