@@ -41,19 +41,27 @@ def users_route():
         return Response(json.dumps({"result": True}), status=200, content_type="application.json")
 
 
+@app.route("/api/users/<uid>", methods=["GET", "DELETE"])
+def user_route(uid):
+    # Get user by uid
+    if request.method == "GET":
+        result = UserResource.get_by_key(uid)
 
-@app.route("/api/users/<uid>", methods=["GET"])
-def get_user_by_uid(uid):
-    result = UserResource.get_by_key(uid)
+        if result:
+            rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        else:
+            rsp = Response("NOT FOUND", status=404, content_type="text/plain")
 
-    if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
-    else:
-        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+        return rsp
+    # Delete user by uid
+    elif request.method == "DELETE":
+        try:
+            UserResource.delete_user(uid)
+        except Exception as e:
+            return Response(json.dumps({"result": False, "error": f"{e}"}), status=404, content_type="application.json")
 
-    return rsp
+        return Response(json.dumps({"result": True}), status=200, content_type="application.json")
 
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5011)
-

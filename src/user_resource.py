@@ -56,3 +56,10 @@ class UserResource:
         cur.execute(sql)
         conn.close()
 
+    @staticmethod
+    def delete_user(uid):
+        sql = f"DELETE FROM {database}.{table} WHERE uid={uid}"
+        conn = UserResource._get_connection()
+        cur = conn.cursor()
+        cur.execute(sql)
+        conn.close()
