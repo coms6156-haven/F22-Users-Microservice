@@ -1,0 +1,147 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  version: "1.0"
+  description: |-
+    This is an OpenAPI doc for Users for Project Haven.
+  contact:
+    email: jz3516@columbia.edu
+servers:
+  - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: user
+    description: Operations about user
+paths:
+  /api/users:
+    get:
+      tags:
+        - user
+      summary: Get all users
+      description: This can only be done by calling this API.
+      operationId: getUsers
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+    post:
+      tags:
+        - user
+      summary: Creates a user
+      description: Creates a user
+      operationId: create a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Users'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        default:
+          description: successful operation
+  /api/users/{uid}:
+    get:
+      tags:
+        - user
+      summary: Get user by uid
+      description: ''
+      operationId: getUserByUid
+      parameters:
+        - name: uid
+          in: path
+          description: 'The uid that needs to be fetched. Use user1 for testing. '
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        '400':
+          description: Invalid uid supplied
+        '404':
+          description: User not found
+    put:
+      tags:
+        - user
+      summary: Update user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+        - name: uid
+          in: path
+          description: uid that need to be udated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent user in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+      responses:
+        default:
+          description: successful operation
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      parameters:
+        - name: uid
+          in: path
+          description: The uid that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid uid supplied
+        '404':
+          description: User not found
+components:
+  schemas:
+    Users:
+      type: object
+      properties:
+        uid:
+          type: integer
+          format: int64
+          example: 10
+        email:
+          type: string
+          example: test@gmail.com
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        password:
+          type: string
+          example: '12345'
+      xml:
+        name: user
+  requestBodies:
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Users'
